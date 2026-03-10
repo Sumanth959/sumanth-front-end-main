@@ -2,10 +2,9 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
-function Reg() {
+function Login() {
    const navigate = useNavigate()
    const [data, setdata] = useState({
-      username: "",
       email: "",
       password: ""
    })
@@ -17,27 +16,27 @@ function Reg() {
    const submit = async () => {
       try {
          const res = await axios.post(
-            "https://cabsystemsms-1.onrender.com/register",
+            "https://cabsystemsms-1.onrender.com/login",
             data
          )
          alert(res.data)
-         // Navigate to login after successful registration
-         navigate("/login")
+         // Store user info and navigate to home
+         localStorage.setItem("userToken", res.data.token || "true")
+         navigate("/home")
       }
       catch (xyz) {
-         alert(xyz.response?.data || "Registration Error")
+         alert(xyz.response?.data || "Login Error")
       }
    }
 
    return (
       <>
-         <h1>Registration Form</h1>
-         <input onChange={changeName} name="username" placeholder="enter username" />
+         <h1>Login Page</h1>
          <input onChange={changeName} name="email" placeholder="enter email" />
          <input onChange={changeName} name="password" placeholder="enter password" type="password" />
-         <button onClick={submit}>Register</button>
-         <p>Already have an account? <a href="/login">Login here</a></p>
+         <button onClick={submit}>Login</button>
+         <p>Don't have an account? <a href="/register">Register here</a></p>
       </>
    )
 }
-export default Reg
+export default Login
